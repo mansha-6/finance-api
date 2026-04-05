@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Finance Data Processing and Access Control Backend
+  version: 1.0.0
+  description: API documentation for the finance dashboard system.
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                role:
+                  type: string
+                  enum: [VIEWER, ANALYST, ADMIN]
+      responses:
+        '201':
+          description: User created successfully
+
+  /auth/login:
+    post:
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+
+  /users:
+    get:
+      summary: Get all users (Admin only)
+      responses:
+        '200':
+          description: List of users
+
+  /users/{id}:
+    patch:
+      summary: Update user role or status (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum: [VIEWER, ANALYST, ADMIN]
+                isActive:
+                  type: boolean
+      responses:
+        '200':
+          description: User updated successfully
+
+  /records:
+    get:
+      summary: Get financial records (Admin, Analyst)
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+        - in: query
+          name: category
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: skip
+          schema:
+            type: integer
+        - in: query
+          name: take
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of records
+    post:
+      summary: Create a financial record (Admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                category:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+                notes:
+                  type: string
+      responses:
+        '201':
+          description: Record created successfully
+
+  /records/{id}:
+    get:
+      summary: Get a specific record (Admin, Analyst)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Record details
+    patch:
+      summary: Update a record (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                type:
+                  type: string
+                  enum: [INCOME, EXPENSE]
+                category:
+                  type: string
+                date:
+                  type: string
+                  format: date-time
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Record updated successfully
+    delete:
+      summary: Delete a record (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Record deleted successfully
+
+  /dashboard/summary:
+    get:
+      summary: Get dashboard summary (Viewer, Analyst, Admin)
+      responses:
+        '200':
+          description: Dashboard summary
