@@ -26,6 +26,7 @@ model Record {
   category    String
   date        DateTime
   notes       String?
+  deletedAt   DateTime?
   createdById String
   createdBy   User     @relation(fields: [createdById], references: [id])
   createdAt   DateTime @default(now())

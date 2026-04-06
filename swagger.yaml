@@ -117,13 +117,14 @@ paths:
             type: string
             format: date-time
         - in: query
-          name: skip
-          schema:
-            type: integer
-        - in: query
           name: take
           schema:
             type: integer
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search through record notes
       responses:
         '200':
           description: List of records
@@ -204,11 +205,11 @@ paths:
             type: string
       responses:
         '200':
-          description: Record deleted successfully
+          description: Record deleted successfully (soft delete)
 
   /dashboard/summary:
     get:
       summary: Get dashboard summary (Viewer, Analyst, Admin)
       responses:
         '200':
-          description: Dashboard summary
+          description: Dashboard summary including totals and monthly trends.

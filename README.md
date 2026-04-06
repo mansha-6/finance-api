@@ -10,7 +10,9 @@ It features robust user role management, financial records management, dashboard
 
 - **User and Role Management**: Roles (Viewer, Analyst, Admin) with corresponding permissions.
 - **Financial Records**: CRUD operations for financial records with pagination and filtering. 
-- **Dashboard Summary API**: Endpoints for totals, net balances, category-wise breakdowns, and recent activities.
+- **Search Support**: Filter records by searching through notes.
+- **Soft Delete**: Records are flagged as deleted rather than removed from the database.
+- **Dashboard Summary API**: Endpoints for totals, net balances, category-wise breakdowns, recent activities, and **monthly trends**.
 - **Access Control Logic**: Guarded endpoints based on JWT authentication.
 - **Validation**: Strict input validation using Zod schemas.
 - **API Documentation**: Interactive Swagger documentation.
